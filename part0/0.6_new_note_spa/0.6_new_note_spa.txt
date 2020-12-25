@@ -1,0 +1,19 @@
+title New Note for SPA Diagram
+
+note over browser:
+browser executes the event handler
+on the form submission and saves
+the new note in the notes array
+it then sends a request of the
+new note to the server
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: json {"message":"note created"}
+
+note over server:
+The server repsonse with
+a 201 status code and
+a json with the message that
+the note is created
+end note
