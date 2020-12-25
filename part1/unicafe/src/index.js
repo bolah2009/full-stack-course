@@ -26,18 +26,21 @@ const Part = ({ name, count }) => (
 const Statistics = ({ data: { good, neutral, bad } }) => {
   const all = good + neutral + bad;
   const average = all / 3;
-  const positive = all ? `${(good * 100) / all}%` : "0%";
+  const positive = all ? `${(good * 100) / all}%` : '0%';
+  if (good || neutral || bad) {
+    return (
+      <div>
+        <Part name='good' count={good} />
+        <Part name='neutral' count={neutral} />
+        <Part name='bad' count={bad} />
+        <Part name='all' count={all} />
+        <Part name='average' count={average} />
+        <Part name='positive' count={positive} />
+      </div>
+    );
+  }
 
-  return (
-    <div>
-      <Part name='good' count={good} />
-      <Part name='neutral' count={neutral} />
-      <Part name='bad' count={bad} />
-      <Part name='all' count={all} />
-      <Part name='average' count={average} />
-      <Part name='positive' count={positive} />
-    </div>
-  );
+  return <p>No feedback given</p>;
 };
 
 const App = () => {
