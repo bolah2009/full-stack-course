@@ -23,13 +23,22 @@ const Part = ({ name, count }) => (
   </p>
 );
 
-const Statistics = ({ data: { good, neutral, bad } }) => (
-  <div>
-    <Part name='good' count={good} />
-    <Part name='neutral' count={neutral} />
-    <Part name='bad' count={bad} />
-  </div>
-);
+const Statistics = ({ data: { good, neutral, bad } }) => {
+  const all = good + neutral + bad;
+  const average = all / 3;
+  const positive = all ? `${(good * 100) / all}%` : "0%";
+
+  return (
+    <div>
+      <Part name='good' count={good} />
+      <Part name='neutral' count={neutral} />
+      <Part name='bad' count={bad} />
+      <Part name='all' count={all} />
+      <Part name='average' count={average} />
+      <Part name='positive' count={positive} />
+    </div>
+  );
+};
 
 const App = () => {
   // save clicks of each button to its own state
