@@ -17,7 +17,7 @@ const ButtonPanel = ({ clicks }) => {
   return <div>{renderButtons}</div>;
 };
 
-const Part = ({ name, count }) => (
+const Statistic = ({ name, count }) => (
   <p>
     {name}: {count}
   </p>
@@ -30,12 +30,12 @@ const Statistics = ({ data: { good, neutral, bad } }) => {
   if (good || neutral || bad) {
     return (
       <div>
-        <Part name='good' count={good} />
-        <Part name='neutral' count={neutral} />
-        <Part name='bad' count={bad} />
-        <Part name='all' count={all} />
-        <Part name='average' count={average} />
-        <Part name='positive' count={positive} />
+        <Statistic name='good' count={good} />
+        <Statistic name='neutral' count={neutral} />
+        <Statistic name='bad' count={bad} />
+        <Statistic name='all' count={all} />
+        <Statistic name='average' count={average} />
+        <Statistic name='positive' count={positive} />
       </div>
     );
   }
