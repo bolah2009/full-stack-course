@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const Content = ({ anecdote }) => <div>{anecdote}</div>;
+const Content = ({ anecdote, voteCount }) => (
+  <div>
+    <p>{anecdote}</p>
+    <p>has {voteCount ? `${voteCount} vote(s)` : 'no vote'}</p>
+  </div>
+);
 
 const Button = ({ name, handleClick }) => (
   <button onClick={() => handleClick()} type='button'>
@@ -12,21 +17,29 @@ const Button = ({ name, handleClick }) => (
 
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
-
-  console.log(selected);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
   const generateRandomNumber = (length) => Math.floor(Math.random() * length);
 
-  const handleClick = () => {
+  const nextAnecdotes = () => {
     const randomNumber = generateRandomNumber(anecdotes.length);
     setSelected(randomNumber);
+  };
+
+  const vote = () => {
+    const votesCopy = [...votes];
+    votesCopy[selected] += 1;
+    setVotes([...votesCopy]);
   };
 
   return (
     <div>
       <h1>anecdotes</h1>
-      <Content anecdote={anecdotes[selected]} />
-      <Button name='next anecdotes' handleClick={handleClick} />
+      <Content voteCount={votes[selected]} anecdote={anecdotes[selected]} />
+      <div>
+        <Button name='vote' handleClick={vote} />
+        <Button name='next anecdotes' handleClick={nextAnecdotes} />
+      </div>
     </div>
   );
 };
