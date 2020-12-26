@@ -15,6 +15,24 @@ const Button = ({ name, handleClick }) => (
   </button>
 );
 
+const MostVotes = ({ votes, anecdotes }) => {
+  const maxVote = Math.max(...votes);
+  const maxVoteIndex = votes.findIndex((vote) => vote === maxVote);
+  if (maxVote > 0)
+    return (
+      <div>
+        <h2>Anecdotes with most votes</h2>
+        <Content anecdote={anecdotes[maxVoteIndex]} voteCount={maxVote} />
+      </div>
+    );
+
+  return (
+    <div>
+      <h2>No anecdotes with votes yet</h2>
+    </div>
+  );
+};
+
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
@@ -34,12 +52,13 @@ const App = ({ anecdotes }) => {
 
   return (
     <div>
-      <h1>anecdotes</h1>
+      <h1>Anecdotes of the day</h1>
       <Content voteCount={votes[selected]} anecdote={anecdotes[selected]} />
       <div>
         <Button name='vote' handleClick={vote} />
         <Button name='next anecdotes' handleClick={nextAnecdotes} />
       </div>
+      <MostVotes votes={votes} anecdotes={anecdotes} />
     </div>
   );
 };
