@@ -10,17 +10,18 @@ const Button = ({ name, handleClick, count }) => (
 );
 
 const ButtonPanel = ({ clicks }) => {
-  const renderButtons = clicks.map(({ name, count, handleClick }, index) => (
-    <Button name={name} key={index} count={count} handleClick={handleClick} />
+  const renderButtons = clicks.map(({ name, count, handleClick, id }) => (
+    <Button name={name} key={id} count={count} handleClick={handleClick} />
   ));
 
   return <div>{renderButtons}</div>;
 };
 
 const Statistic = ({ name, count }) => (
-  <p>
-    {name}: {count}
-  </p>
+  <tr>
+    <td>{name}</td>
+    <td>{count}</td>
+  </tr>
 );
 
 const Statistics = ({ data: { good, neutral, bad } }) => {
@@ -29,14 +30,17 @@ const Statistics = ({ data: { good, neutral, bad } }) => {
   const positive = all ? `${(good * 100) / all}%` : '0%';
   if (good || neutral || bad) {
     return (
-      <div>
+      <table>
+        <caption>Statistics</caption>
+        <tbody>
         <Statistic name='good' count={good} />
         <Statistic name='neutral' count={neutral} />
         <Statistic name='bad' count={bad} />
         <Statistic name='all' count={all} />
         <Statistic name='average' count={average} />
         <Statistic name='positive' count={positive} />
-      </div>
+        </tbody>
+      </table>
     );
   }
 
@@ -54,16 +58,19 @@ const App = () => {
       name: 'good',
       count: good,
       handleClick: setGood,
+      id: 1
     },
     {
       name: 'neutral',
       count: neutral,
       handleClick: setNeutral,
+      id: 2
     },
     {
       name: 'bad',
       count: bad,
       handleClick: setBad,
+      id: 3
     },
   ];
 
