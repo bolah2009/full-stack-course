@@ -19,9 +19,17 @@ const App = () => {
       .replace(/[^a-z]+/g, '')
       .substr(0, 10);
 
+  const nameAlreadyExist = (value) =>
+    persons.some(({ name }) => name === value);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const name = `${firstName} ${lastName}`;
+
+    if (nameAlreadyExist(name)) {
+      alert(`${name} is already added to phonebook`);
+      return false;
+    }
 
     const newPersons = {
       name,
