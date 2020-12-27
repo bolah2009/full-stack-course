@@ -3,15 +3,19 @@ import React, { useState } from 'react';
 const Numbers = ({ persons }) => (
   <div>
     {persons.map((person) => (
-      <p key={person.name}>{person.name}</p>
+      <p key={person.name}>{person.name + ' ' + person.number}</p>
     ))}
   </div>
 );
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState({ firstName: '', lastName: '' });
-  const { firstName, lastName } = newName;
+  const [newName, setNewName] = useState({
+    firstName: '',
+    lastName: '',
+    number: '',
+  });
+  const { firstName, lastName, number } = newName;
 
   const generateID = () =>
     Math.random()
@@ -31,12 +35,13 @@ const App = () => {
       return false;
     }
 
-    const newPersons = {
+    const newPerson = {
       name,
+      number,
       id: generateID(),
     };
-    setPersons([...persons, newPersons]);
-    setNewName({ firstName: '', lastName: '' });
+    setPersons([...persons, newPerson]);
+    setNewName({ firstName: '', lastName: '', number: '' });
     return true;
   };
 
@@ -66,6 +71,17 @@ const App = () => {
             value={lastName}
             name='lastName'
             id='lastName'
+          />
+        </div>
+        <div>
+          <label htmlFor='number'>number:</label>
+          <input
+            required
+            onChange={(e) => handleChange(e)}
+            value={number}
+            name='number'
+            id='number'
+            type="tel"
           />
         </div>
         <div>
