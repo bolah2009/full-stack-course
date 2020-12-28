@@ -1,0 +1,9 @@
+{
+  "phonebook": [
+    { "name": "Arto Hellas", "number": "040-123456", "id": "0h8ifq6fsa" },
+    { "name": "Ada Lovelace", "number": "39-44-5323523", "id": "0x1w9cna24" },
+    { "name": "Buari Bola", "number": "81-32-94888", "id": "00d4mpe5zi" },
+    { "name": "Dan Abramov", "number": "12-43-234345", "id": "04djf2luk6" },
+    { "name": "Mary Popedeck", "number": "39-23-642312", "id": "0ixn23ehiu" }
+  ]
+}
