@@ -13,6 +13,10 @@ const App = () => {
     setFilter(filterValue);
   };
 
+  const showCountry = (country) => {
+    setFilteredCountries([country]);
+  };
+
   useEffect(() => {
     axios.get('https://restcountries.eu/rest/v2/all').then(({ data }) => {
       setCountries(data);
@@ -30,7 +34,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <Filter handleFilterChange={handleFilterChange} filter={filter} />
       <h2>Countries</h2>
-      <Countries countries={filteredCountries} />
+      <Countries countries={filteredCountries} showCountry={showCountry} />
     </div>
   );
 };
