@@ -38,8 +38,13 @@ const App = () => {
       number,
       id: generateID(),
     };
-    setPersons([...persons, newPerson]);
-    setNewRecord({ firstName: '', lastName: '', number: '' });
+
+    axios
+    .post('http://localhost:3001/phonebook', newPerson)
+    .then(({data}) => {
+      setPersons([...persons, data]);
+      setNewRecord({ firstName: '', lastName: '', number: '' });
+    })
     return true;
   };
 
