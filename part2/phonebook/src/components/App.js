@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import phonebookService from '../services/phonebook';
 import Persons from './Persons';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
@@ -14,6 +14,8 @@ const App = () => {
     number: '',
   });
   const { firstName, lastName, number } = newRecord;
+
+  const { getAll, create } = phonebookService;
 
   const generateID = () =>
     Math.random()
@@ -39,12 +41,10 @@ const App = () => {
       id: generateID(),
     };
 
-    axios
-    .post('http://localhost:3001/phonebook', newPerson)
-    .then(({data}) => {
+    create(newPerson).then((data) => {
       setPersons([...persons, data]);
       setNewRecord({ firstName: '', lastName: '', number: '' });
-    })
+    });
     return true;
   };
 
@@ -58,10 +58,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/phonebook')
-      .then(({ data }) => setPersons(data));
-  }, []);
+    getAll().then((data) => setPersons(data));
+    console.log('getAll')
+  }, [getAll]);
 
   useEffect(() => {
     setfilteredPersons(
