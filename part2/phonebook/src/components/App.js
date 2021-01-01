@@ -15,7 +15,7 @@ const App = () => {
   });
   const { firstName, lastName, number } = newRecord;
 
-  const { getAll, create } = phonebookService;
+  const { getAll, create, deletePhonebook } = phonebookService;
 
   const generateID = () =>
     Math.random()
@@ -52,6 +52,14 @@ const App = () => {
     setNewRecord({ ...newRecord, ...{ [`${e.target.name}`]: e.target.value } });
   };
 
+  const handleDelete = ({ id, name }) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      deletePhonebook(id).then(() => {
+        setPersons(persons.filter(({ id: currentID }) => id !== currentID));
+      });
+    }
+  };
+
   const handleFilterChange = ({ target: { value } }) => {
     const filterValue = value.replace(/[^a-z| ]+/gi, '');
     setFilter(filterValue);
@@ -59,7 +67,6 @@ const App = () => {
 
   useEffect(() => {
     getAll().then((data) => setPersons(data));
-    console.log('getAll')
   }, [getAll]);
 
   useEffect(() => {
@@ -78,7 +85,7 @@ const App = () => {
         newRecord={newRecord}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} handleDelete={handleDelete} />
     </div>
   );
 };
