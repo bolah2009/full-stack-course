@@ -3,6 +3,7 @@ import phonebookService from '../services/phonebook';
 import Persons from './Persons';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
+import Notification from './Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,6 +14,11 @@ const App = () => {
     lastName: '',
     number: '',
   });
+  const [notification, setNotification] = useState({
+    message: '',
+    messageType: '',
+  });
+
   const { firstName, lastName, number } = newRecord;
 
   const { getAll, create, deletePhonebook, update } = phonebookService;
@@ -51,6 +57,13 @@ const App = () => {
             ),
           ]);
           setNewRecord({ firstName: '', lastName: '', number: '' });
+          setNotification({
+            message: `${name} number changed`,
+            messageType: 'success',
+          });
+          setTimeout(() => {
+            setNotification({ message: '', messageType: '' });
+          }, 5000);
         });
       }
 
@@ -66,6 +79,10 @@ const App = () => {
     create(newPerson).then((data) => {
       setPersons([...persons, data]);
       setNewRecord({ firstName: '', lastName: '', number: '' });
+      setNotification({ message: `Added ${name}`, messageType: 'success' });
+      setTimeout(() => {
+        setNotification({ message: '', messageType: '' });
+      }, 5000);
     });
     return true;
   };
@@ -78,6 +95,10 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       deletePhonebook(id).then(() => {
         setPersons(persons.filter(({ id: currentID }) => id !== currentID));
+        setNotification({ message: `${name} deleted`, messageType: 'success' });
+        setTimeout(() => {
+          setNotification({ message: '', messageType: '' });
+        }, 5000);
       });
     }
   };
@@ -100,6 +121,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification notification={notification} />
       <Filter handleFilterChange={handleFilterChange} filter={filter} />
       <PersonForm
         handleChange={handleChange}
