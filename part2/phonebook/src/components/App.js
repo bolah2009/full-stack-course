@@ -50,21 +50,31 @@ const App = () => {
           `${name} is already added to phonebook. Replace the old number with a new one?`
         )
       ) {
-        update(id, { name, number, id }).then((data) => {
-          setPersons([
-            ...persons.map((person) =>
-              id !== person.id ? person : { ...person, number: data.number }
-            ),
-          ]);
-          setNewRecord({ firstName: '', lastName: '', number: '' });
-          setNotification({
-            message: `${name} number changed`,
-            messageType: 'success',
+        update(id, { name, number, id })
+          .then((data) => {
+            setPersons([
+              ...persons.map((person) =>
+                id !== person.id ? person : { ...person, number: data.number }
+              ),
+            ]);
+            setNewRecord({ firstName: '', lastName: '', number: '' });
+            setNotification({
+              message: `${name} number changed`,
+              messageType: 'success',
+            });
+            setTimeout(() => {
+              setNotification({ message: '', messageType: '' });
+            }, 5000);
+          })
+          .catch((error) => {
+            setNotification({
+              message: `Information of ${name} was already removed from server`,
+              messageType: 'error',
+            });
+            setTimeout(() => {
+              setNotification({ message: '', messageType: '' });
+            }, 5000);
           });
-          setTimeout(() => {
-            setNotification({ message: '', messageType: '' });
-          }, 5000);
-        });
       }
 
       return false;
@@ -76,14 +86,24 @@ const App = () => {
       id: generateID(),
     };
 
-    create(newPerson).then((data) => {
-      setPersons([...persons, data]);
-      setNewRecord({ firstName: '', lastName: '', number: '' });
-      setNotification({ message: `Added ${name}`, messageType: 'success' });
-      setTimeout(() => {
-        setNotification({ message: '', messageType: '' });
-      }, 5000);
-    });
+    create(newPerson)
+      .then((data) => {
+        setPersons([...persons, data]);
+        setNewRecord({ firstName: '', lastName: '', number: '' });
+        setNotification({ message: `Added ${name}`, messageType: 'success' });
+        setTimeout(() => {
+          setNotification({ message: '', messageType: '' });
+        }, 5000);
+      })
+      .catch((error) => {
+        setNotification({
+          message: 'An error occur while trying to add new contact, try again later',
+          messageType: 'error',
+        });
+        setTimeout(() => {
+          setNotification({ message: '', messageType: '' });
+        }, 5000);
+      });
     return true;
   };
 
@@ -93,13 +113,26 @@ const App = () => {
 
   const handleDelete = ({ id, name }) => {
     if (window.confirm(`Delete ${name}?`)) {
-      deletePhonebook(id).then(() => {
-        setPersons(persons.filter(({ id: currentID }) => id !== currentID));
-        setNotification({ message: `${name} deleted`, messageType: 'success' });
-        setTimeout(() => {
-          setNotification({ message: '', messageType: '' });
-        }, 5000);
-      });
+      deletePhonebook(id)
+        .then(() => {
+          setPersons(persons.filter(({ id: currentID }) => id !== currentID));
+          setNotification({
+            message: `${name} deleted`,
+            messageType: 'success',
+          });
+          setTimeout(() => {
+            setNotification({ message: '', messageType: '' });
+          }, 5000);
+        })
+        .catch((error) => {
+          setNotification({
+            message: `Information of ${name} was already removed from server`,
+            messageType: 'error',
+          });
+          setTimeout(() => {
+            setNotification({ message: '', messageType: '' });
+          }, 5000);
+        });
     }
   };
 
@@ -109,7 +142,18 @@ const App = () => {
   };
 
   useEffect(() => {
-    getAll().then((data) => setPersons(data));
+    getAll()
+      .then((data) => setPersons(data))
+      .catch((error) => {
+        setNotification({
+          message:
+            'An error occur when trying to get all phonebook, try again later',
+          messageType: 'error',
+        });
+        setTimeout(() => {
+          setNotification({ message: '', messageType: '' });
+        }, 5000);
+      });
   }, [getAll]);
 
   useEffect(() => {
