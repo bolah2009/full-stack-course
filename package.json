@@ -1,0 +1,26 @@
+{
+  "name": "fullstack",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "babel-eslint": "^10.1.x",
+    "eslint": "^7.11.x",
+    "eslint-config-airbnb": "^18.1.x",
+    "eslint-plugin-import": "^2.22.x",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "2.2.1",
+    "stylelint": "^13.3.x",
+    "stylelint-config-standard": "^20.0.x",
+    "stylelint-csstree-validator": "^1.9.x",
+    "stylelint-scss": "^3.17.x"
+  },
+  "scripts": {
+    "format": "npx prettier  --write '**/*.{html,json,md.json,yaml,yml}'",
+    "format:check": "npx prettier  --check '**/*.{html,json,md.json,yaml,yml}'",
+    "lint": "npx eslint -c .eslintrc.json '**/*.{js,jsx}' --fix && npx stylelint '**/*.css' --fix",
+    "lint:check": "npx eslint -c .eslintrc.json '**/*.{js,jsx}' && npx stylelint '**/*.css'"
+  }
+}

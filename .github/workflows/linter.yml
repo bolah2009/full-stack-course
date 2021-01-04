@@ -1,0 +1,23 @@
+name: Linter
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install required dependency for node
+        run: |
+          yarn install
+      - name: Run Eslint and Stylelint
+        run: |
+          yarn lint:check
+      - name: Run Prettier
+        run: |
+          yarn format:check
