@@ -15,7 +15,7 @@ const App = () => {
   });
   const { firstName, lastName, number } = newRecord;
 
-  const { getAll, create, deletePhonebook } = phonebookService;
+  const { getAll, create, deletePhonebook, update } = phonebookService;
 
   const generateID = () =>
     Math.random()
@@ -31,7 +31,29 @@ const App = () => {
     const name = `${firstName} ${lastName}`;
 
     if (nameAlreadyExist(name)) {
-      alert(`${name} is already added to phonebook`);
+      const { id, number: oldNumber } = persons.find(
+        ({ name: currentName }) => name === currentName
+      );
+      if (oldNumber === number) {
+        alert(`${name} is already added to phonebook with the same number`);
+        return false;
+      }
+
+      if (
+        window.confirm(
+          `${name} is already added to phonebook. Replace the old number with a new one?`
+        )
+      ) {
+        update(id, { name, number, id }).then((data) => {
+          setPersons([
+            ...persons.map((person) =>
+              id !== person.id ? person : { ...person, number: data.number }
+            ),
+          ]);
+          setNewRecord({ firstName: '', lastName: '', number: '' });
+        });
+      }
+
       return false;
     }
 
