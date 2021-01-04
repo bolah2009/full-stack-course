@@ -21,24 +21,24 @@ const App = () => {
 
   const { firstName, lastName, number } = newRecord;
 
-  const { getAll, create, deletePhonebook, update } = phonebookService;
+  const {
+    getAll, create, deletePhonebook, update,
+  } = phonebookService;
 
-  const generateID = () =>
-    Math.random()
-      .toString(36)
-      .replace(/[^a-z|\d]+/g, '')
-      .substr(0, 10);
+  const generateID = () => Math.random()
+    .toString(36)
+    .replace(/[^a-z|\d]+/g, '')
+    .substr(0, 10);
 
-  const nameAlreadyExist = (value) =>
-    persons.some(({ name }) => name === value);
+  const nameAlreadyExist = value => persons.some(({ name }) => name === value);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     const name = `${firstName} ${lastName}`;
 
     if (nameAlreadyExist(name)) {
       const { id, number: oldNumber } = persons.find(
-        ({ name: currentName }) => name === currentName
+        ({ name: currentName }) => name === currentName,
       );
       if (oldNumber === number) {
         alert(`${name} is already added to phonebook with the same number`);
@@ -47,15 +47,16 @@ const App = () => {
 
       if (
         window.confirm(
-          `${name} is already added to phonebook. Replace the old number with a new one?`
+          `${name} is already added to phonebook. Replace the old number with a new one?`,
         )
       ) {
         update(id, { name, number, id })
-          .then((data) => {
+          .then(data => {
             setPersons([
-              ...persons.map((person) =>
-                id !== person.id ? person : { ...person, number: data.number }
-              ),
+              ...persons
+                .map(person => (
+                  id !== person.id ? person : { ...person, number: data.number }
+                )),
             ]);
             setNewRecord({ firstName: '', lastName: '', number: '' });
             setNotification({
@@ -66,7 +67,7 @@ const App = () => {
               setNotification({ message: '', messageType: '' });
             }, 5000);
           })
-          .catch((error) => {
+          .catch(() => {
             setNotification({
               message: `Information of ${name} was already removed from server`,
               messageType: 'error',
@@ -87,7 +88,7 @@ const App = () => {
     };
 
     create(newPerson)
-      .then((data) => {
+      .then(data => {
         setPersons([...persons, data]);
         setNewRecord({ firstName: '', lastName: '', number: '' });
         setNotification({ message: `Added ${name}`, messageType: 'success' });
@@ -95,7 +96,7 @@ const App = () => {
           setNotification({ message: '', messageType: '' });
         }, 5000);
       })
-      .catch((error) => {
+      .catch(() => {
         setNotification({
           message: 'An error occur while trying to add new contact, try again later',
           messageType: 'error',
@@ -107,7 +108,7 @@ const App = () => {
     return true;
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setNewRecord({ ...newRecord, ...{ [`${e.target.name}`]: e.target.value } });
   };
 
@@ -124,7 +125,7 @@ const App = () => {
             setNotification({ message: '', messageType: '' });
           }, 5000);
         })
-        .catch((error) => {
+        .catch(() => {
           setNotification({
             message: `Information of ${name} was already removed from server`,
             messageType: 'error',
@@ -143,8 +144,8 @@ const App = () => {
 
   useEffect(() => {
     getAll()
-      .then((data) => setPersons(data))
-      .catch((error) => {
+      .then(data => setPersons(data))
+      .catch(() => {
         setNotification({
           message:
             'An error occur when trying to get all phonebook, try again later',
@@ -158,7 +159,7 @@ const App = () => {
 
   useEffect(() => {
     setfilteredPersons(
-      persons.filter(({ name }) => RegExp(filter, 'i').test(name))
+      persons.filter(({ name }) => RegExp(filter, 'i').test(name)),
     );
   }, [filter, persons]);
 

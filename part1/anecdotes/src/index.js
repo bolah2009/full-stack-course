@@ -1,30 +1,35 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import './index.css';
 
 const Content = ({ anecdote, voteCount }) => (
   <div>
     <p>{anecdote}</p>
-    <p>has {voteCount ? `${voteCount} vote(s)` : 'no vote'}</p>
+    <p>
+      has
+      {voteCount ? `${voteCount} vote(s)` : 'no vote'}
+    </p>
   </div>
 );
 
 const Button = ({ name, handleClick }) => (
-  <button onClick={() => handleClick()} type='button'>
+  <button onClick={() => handleClick()} type="button">
     {name}
   </button>
 );
 
 const MostVotes = ({ votes, anecdotes }) => {
   const maxVote = Math.max(...votes);
-  const maxVoteIndex = votes.findIndex((vote) => vote === maxVote);
-  if (maxVote > 0)
+  const maxVoteIndex = votes.findIndex(vote => vote === maxVote);
+  if (maxVote > 0) {
     return (
       <div>
         <h2>Anecdotes with most votes</h2>
         <Content anecdote={anecdotes[maxVoteIndex]} voteCount={maxVote} />
       </div>
     );
+  }
 
   return (
     <div>
@@ -37,7 +42,7 @@ const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
 
-  const generateRandomNumber = (length) => Math.floor(Math.random() * length);
+  const generateRandomNumber = length => Math.floor(Math.random() * length);
 
   const nextAnecdotes = () => {
     const randomNumber = generateRandomNumber(anecdotes.length);
@@ -55,8 +60,8 @@ const App = ({ anecdotes }) => {
       <h1>Anecdotes of the day</h1>
       <Content voteCount={votes[selected]} anecdote={anecdotes[selected]} />
       <div>
-        <Button name='vote' handleClick={vote} />
-        <Button name='next anecdotes' handleClick={nextAnecdotes} />
+        <Button name="vote" handleClick={vote} />
+        <Button name="next anecdotes" handleClick={nextAnecdotes} />
       </div>
       <MostVotes votes={votes} anecdotes={anecdotes} />
     </div>
@@ -76,5 +81,24 @@ ReactDOM.render(
   <React.StrictMode>
     <App anecdotes={anecdotes} />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
+
+Content.propTypes = {
+  anecdote: PropTypes.string.isRequired,
+  voteCount: PropTypes.number.isRequired,
+};
+
+Button.propTypes = {
+  name: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+};
+
+MostVotes.propTypes = {
+  anecdotes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  votes: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
+
+App.propTypes = {
+  anecdotes: PropTypes.arrayOf(PropTypes.string).isRequired,
+};

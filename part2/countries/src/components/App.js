@@ -13,7 +13,7 @@ const App = () => {
     setFilter(filterValue);
   };
 
-  const showCountry = (country) => {
+  const showCountry = country => {
     setFilteredCountries([country]);
   };
 
@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     setFilteredCountries(
-      countries.filter(({ name }) => RegExp(filter, 'i').test(name))
+      countries.filter(({ name }) => RegExp(filter, 'i').test(name)),
     );
   }, [filter, countries]);
 

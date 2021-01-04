@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import './index.css';
 
 const Header = ({ title }) => <h1>{title}</h1>;
 const Button = ({ name, handleClick, count }) => (
-  <button onClick={() => handleClick(count + 1)} type='button'>
+  <button onClick={() => handleClick(count + 1)} type="button">
     {name}
   </button>
 );
 
 const ButtonPanel = ({ clicks }) => {
-  const renderButtons = clicks.map(({ name, count, handleClick, id }) => (
+  const renderButtons = clicks.map(({
+    name, count, handleClick, id,
+  }) => (
     <Button name={name} key={id} count={count} handleClick={handleClick} />
   ));
 
@@ -33,12 +36,12 @@ const Statistics = ({ data: { good, neutral, bad } }) => {
       <table>
         <caption>Statistics</caption>
         <tbody>
-        <Statistic name='good' count={good} />
-        <Statistic name='neutral' count={neutral} />
-        <Statistic name='bad' count={bad} />
-        <Statistic name='all' count={all} />
-        <Statistic name='average' count={average} />
-        <Statistic name='positive' count={positive} />
+          <Statistic name="good" count={good} />
+          <Statistic name="neutral" count={neutral} />
+          <Statistic name="bad" count={bad} />
+          <Statistic name="all" count={all} />
+          <Statistic name="average" count={average} />
+          <Statistic name="positive" count={positive} />
         </tbody>
       </table>
     );
@@ -58,19 +61,19 @@ const App = () => {
       name: 'good',
       count: good,
       handleClick: setGood,
-      id: 1
+      id: 1,
     },
     {
       name: 'neutral',
       count: neutral,
       handleClick: setNeutral,
-      id: 2
+      id: 2,
     },
     {
       name: 'bad',
       count: bad,
       handleClick: setBad,
-      id: 3
+      id: 3,
     },
   ];
 
@@ -78,7 +81,7 @@ const App = () => {
 
   return (
     <div>
-      <Header title='Give Feedback' />
+      <Header title="Give Feedback" />
       <ButtonPanel clicks={clicks} />
       <Statistics data={data} />
     </div>
@@ -86,3 +89,35 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
+
+Header.propTypes = {
+  title: PropTypes.string.isRequired,
+};
+
+Button.propTypes = {
+  name: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
+};
+
+ButtonPanel.propTypes = {
+  clicks: PropTypes.arrayOf({
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    handleClick: PropTypes.func.isRequired,
+    count: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
+Statistic.propTypes = {
+  name: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
+};
+
+Statistics.propTypes = {
+  data: PropTypes.shapeOf({
+    good: PropTypes.number,
+    neutral: PropTypes.number,
+    bad: PropTypes.number,
+  }).isRequired,
+};
